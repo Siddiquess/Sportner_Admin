@@ -59,7 +59,7 @@ class LoginViewModel with ChangeNotifier {
       setLoginStatus(accesToken!);
       clearController();
       setLoading(false);
-      navigator.pushReplacementNamed(ScreenRoutes.homeScreen);
+      navigator.pushReplacementNamed(ScreenRoutes.mainScreen);
     }
     if (response is Failure) {
       await setLoading(false);

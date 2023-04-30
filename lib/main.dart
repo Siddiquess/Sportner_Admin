@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/view/admin_login_view.dart';
+import 'package:sportner_admin/view/bottom_nav_view.dart';
 import 'package:sportner_admin/view/dashboard_view.dart';
 import 'package:sportner_admin/view/home_view.dart';
 import 'package:sportner_admin/view/splash_screen_view.dart';
 import 'package:sportner_admin/view_model/bottom_nav_view_model.dart';
 import 'package:sportner_admin/view_model/dashboard_view_model.dart';
+import 'package:sportner_admin/view_model/user_data_view_model.dart';
 import 'package:sportner_admin/view_model/login_view_model.dart';
+import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import 'utils/global_colors.dart';
 
 void main() {
@@ -29,6 +32,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DashBoardViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserDataViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VendorDataViewModel(),
         ),
       ],
       child: MaterialApp(
@@ -66,6 +75,7 @@ class MyApp extends StatelessWidget {
           "/splashScreen": (context) => const SplashScreen(),
           "/adminLoginScreen": (context) => const AdminLoginScreen(),
           "/homeScreen": (context) => const HomeScreenView(),
+          "/mainScreen": (context) =>  BottomNavView(),
         },
         initialRoute: "/splashScreen",
       ),

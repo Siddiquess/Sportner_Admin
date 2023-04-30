@@ -20,7 +20,7 @@ class LoginButtonWidget extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: AppColors.black,
+        backgroundColor: AppColors.appColor,
       ),
       onPressed: onPressed,
       child: SizedBox(

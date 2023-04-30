@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/home_view_components/userlist_components.dart';
 import 'package:sportner_admin/utils/global_values.dart';
+import 'package:sportner_admin/view_model/user_data_view_model.dart';
 import 'package:sportner_admin/view_model/login_view_model.dart';
+import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import '../components/home_view_components/vendor_list_componentsl.dart';
 
 class HomeScreenView extends StatelessWidget {
@@ -10,6 +12,8 @@ class HomeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userViewModel = context.watch<UserDataViewModel>();
+    final vendorViewModel = context.watch<VendorDataViewModel>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
