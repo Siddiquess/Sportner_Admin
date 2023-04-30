@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'api_status.dart';
 import 'service_exception.dart';

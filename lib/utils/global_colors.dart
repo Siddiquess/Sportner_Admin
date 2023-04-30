@@ -2,15 +2,23 @@ import 'package:flutter/material.dart';
 
 // colors
 class AppColors {
+  /// SPECIAL COLORS
+  static const appColor = Color(0xFF00B562);
+
+
+  /// COLORS
   static const scaffoldColor = Colors.white;
-  static const green = Color(0xFF00B562);
-  static const appColor = Color.fromARGB(255, 0, 181, 98);
   static const white = Colors.white;
   static const black = Colors.black;
-  static const klightBlackColor = Colors.black54;
   static const grey = Colors.grey;
-  static const lightgrey = Color.fromARGB(45, 158, 158, 158);
+  static const red = Colors.red;
+  static const green = Colors.green;
 
+  /// Light colors
+  static const klightBlackColor = Colors.black54;
+  static const lightgrey = Color.fromARGB(45, 158, 158, 158);
+  static const lightgreen = Color.fromARGB(65, 76, 175, 79);
+  static const lightred = Color.fromARGB(65, 244, 67, 54);
 }
 
 class PrimaryColor {

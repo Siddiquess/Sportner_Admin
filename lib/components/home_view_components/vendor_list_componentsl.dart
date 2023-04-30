@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sportner_admin/components/home_view_components/blok_user_alert_box.dart';
+import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
 import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
-import '../../utils/global_colors.dart';
 import '../../utils/global_values.dart';
 import '../../utils/text_styles.dart';
 
@@ -12,6 +13,7 @@ class VendorListComponents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vendorViewModel = context.watch<VendorDataViewModel>();
     return Column(
       children: [
         Row(
@@ -20,10 +22,7 @@ class VendorListComponents extends StatelessWidget {
             Row(
               children: [
                 const Icon(Icons.group),
-                Text(
-                  "Vendors",
-                  style: AppTextStyles.textH2,
-                ),
+                Text("Vendors", style: AppTextStyles.textH2),
               ],
             ),
             TextButton(
@@ -42,67 +41,44 @@ class VendorListComponents extends StatelessWidget {
         ),
         const Divider(thickness: 1.5),
         AppSizes.kHeight5,
-        const VendorListWidget()
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(44, 158, 158, 158),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _vendorListWidget(vendorViewModel: vendorViewModel),
+          ),
+        )
       ],
     );
   }
 }
 
-class VendorListWidget extends StatelessWidget {
-  const VendorListWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final vendorViewModel = context.watch<VendorDataViewModel>();
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      itemBuilder: (context, index) {
-        final vendorData = vendorViewModel.vendorDataList[index];
-        return Container(
-          height: 50,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: AppColors.white,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Text("${vendorData.name}"),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Text(vendorData.mobile ?? "No mobile"),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: IconButton(
-                    onPressed: () {
-                      vendorViewModel.getVendorBlockStatus(
-                        vendorId: vendorData.id!,
-                      );
-                    },
-                    splashRadius: 5,
-                    icon: Icon(Icons.person,
-                        color: vendorData.blockStatus!
-                            ? Colors.red
-                            : Colors.green),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) => AppSizes.kHeight10,
-      itemCount: 4,
-    );
-  }
+_vendorListWidget({required VendorDataViewModel vendorViewModel}) {
+  return ListView.separated(
+    shrinkWrap: true,
+    physics: const ScrollPhysics(),
+    itemCount: vendorViewModel.vendorDataList.length,
+    separatorBuilder: (context, index) => AppSizes.kHeight10,
+    itemBuilder: (context, index) {
+      final vendorData = vendorViewModel.vendorDataList[index];
+      return UserVendorListWidget(
+        name: vendorData.name!,
+        mobile: vendorData.mobile ?? "No mobile",
+        blockStatus: vendorData.blockStatus!,
+        onTap: () {},
+        blockButton: () {
+          BlockAlertBox.alertBox(
+            context: context,
+            blockStatus: vendorData.blockStatus!,
+            isUser: false,
+            vendorData: vendorData,
+            vendorsViewModel: vendorViewModel,
+          );
+        },
+      );
+    },
+  );
 }

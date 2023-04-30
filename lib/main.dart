@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/view/admin_login_view.dart';
 import 'package:sportner_admin/view/bottom_nav_view.dart';
-import 'package:sportner_admin/view/dashboard_view.dart';
 import 'package:sportner_admin/view/home_view.dart';
 import 'package:sportner_admin/view/splash_screen_view.dart';
 import 'package:sportner_admin/view_model/bottom_nav_view_model.dart';
@@ -56,7 +55,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: const ElevatedButtonThemeData(
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
-                AppColors.green,
+                AppColors.appColor,
               ),
             ),
           ),

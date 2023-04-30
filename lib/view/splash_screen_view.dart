@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../utils/global_keys.dart';
 import 'admin_login_view.dart';
 import 'bottom_nav_view.dart';
-import 'home_view.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
