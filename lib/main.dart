@@ -11,6 +11,7 @@ import 'package:sportner_admin/view_model/login_view_model.dart';
 import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import 'utils/global_colors.dart';
 import 'view_model/sport_data_view_model.dart';
+import 'view_model/venue_list_view_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => SportsDataViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VenueDataViewModel(),
         ),
       ],
       child: MaterialApp(
