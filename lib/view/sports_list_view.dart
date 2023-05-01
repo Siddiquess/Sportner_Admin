@@ -1,10 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:sportner_admin/utils/global_colors.dart';
+import 'package:sportner_admin/utils/text_styles.dart';
+import '../components/sports_view_components.dart/sport_data_container.dart';
+import '../utils/global_values.dart';
 
 class SportsListView extends StatelessWidget {
   const SportsListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: AppColors.lightgrey,
+      appBar: AppBar(
+        title: const Text(
+          "Sports",
+          style: TextStyle(color: AppColors.white),
+        ),
+        elevation: 1,
+        backgroundColor: AppColors.appColor,
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AppSizes.kHeight20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Sport", style: AppTextStyles.textH4),
+                  Text("Logo", style: AppTextStyles.textH4),
+                  Text("Facility", style: AppTextStyles.textH4)
+                ],
+              ),
+              const Divider(thickness: 1.5),
+              AppSizes.kHeight5,
+              const SportDataContainerWidget(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
+
+

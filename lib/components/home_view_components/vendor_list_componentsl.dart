@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sportner_admin/components/home_view_components/blok_user_alert_box.dart';
+import 'package:sportner_admin/components/alert_box_widget.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
 import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import '../../utils/global_values.dart';
@@ -70,12 +70,17 @@ _vendorListWidget({required VendorDataViewModel vendorViewModel}) {
         blockStatus: vendorData.blockStatus!,
         onTap: () {},
         blockButton: () {
-          BlockAlertBox.alertBox(
+          AlertBoxWidget.alertBox(
             context: context,
+            blockButton: () {
+              vendorViewModel.getVendorBlockStatus(
+                vendorId: vendorData.id!,
+              );
+              Navigator.pop(context);
+            },
             blockStatus: vendorData.blockStatus!,
-            isUser: false,
-            vendorData: vendorData,
-            vendorsViewModel: vendorViewModel,
+            title: "Vendor",
+            blockText: vendorData.blockStatus! ? "Unblock" : "Block",
           );
         },
       );

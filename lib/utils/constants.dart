@@ -4,8 +4,10 @@ class Urls {
   static const String kGetDashboardData = "$kBASEURL/admin/";
   static const String kGetUserData = "$kBASEURL/admin/users";
   static const String kGetVendorData = "$kBASEURL/admin/vm";
+  static const String kGetSportsData = "$kBASEURL/admin/sports";
   static const String kBlockUsers = "$kBASEURL/admin/users/blockStatus";
   static const String kBlockVendors = "$kBASEURL/admin/vm/blockStatus";
+  static const String kBlockSports = "$kBASEURL/admin/sports";
 }
 
 class InvalidRespons {

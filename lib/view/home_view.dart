@@ -17,13 +17,21 @@ class HomeScreenView extends StatelessWidget {
       backgroundColor: AppColors.lightgrey,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Admin"),
+        title: const Text(
+          "Admin",
+          style: TextStyle(color: AppColors.white),
+        ),
+        elevation: 2,
+        backgroundColor: AppColors.appColor,
         actions: [
           IconButton(
             onPressed: () {
               context.read<LoginViewModel>().setLogout(context);
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(
+              Icons.logout,
+              color: AppColors.white,
+            ),
           )
         ],
       ),

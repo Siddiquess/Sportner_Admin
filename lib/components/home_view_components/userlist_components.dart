@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sportner_admin/components/home_view_components/blok_user_alert_box.dart';
+import 'package:sportner_admin/components/alert_box_widget.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
 import 'package:sportner_admin/view_model/user_data_view_model.dart';
 import '../../utils/global_values.dart';
@@ -71,19 +71,22 @@ _userListWidget({required UserDataViewModel usersViewModel}) {
         name: userData.name!,
         mobile: userData.mobile ?? userData.email ?? "NO mobile",
         blockStatus: userData.blockStatus!,
-        onTap:null,
+        onTap: null,
         blockButton: () {
-          BlockAlertBox.alertBox(
+          AlertBoxWidget.alertBox(
             context: context,
+            blockButton: () {
+              usersViewModel.getUserBlockStatus(
+                userId: userData.id!,
+              );
+              Navigator.pop(context);
+            },
             blockStatus: userData.blockStatus!,
-            isUser: true,
-            usersViewModel: usersViewModel,
-            userData: userData,
+            title: "User",
+            blockText: userData.blockStatus! ? "Unblock" : "Block",
           );
         },
       );
     },
   );
 }
-
-
