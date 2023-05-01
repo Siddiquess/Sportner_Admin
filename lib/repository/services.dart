@@ -71,4 +71,27 @@ class ApiServices {
       return ServiceExeptions.cases(e);
     }
   }
+
+
+  static Future<Object> deleteMethod(
+      {required String url,
+      Map<String, String>? headers,
+      Map? body,
+      Function? jsonDecode}) async {
+    try {
+      final response =
+          await http.delete(Uri.parse(url), headers: headers, body: body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log(response.body.toString());
+
+        return Success(response: jsonDecode ?? (response.body));
+      }
+      log(response.body.toString());
+
+      return Failure(
+          code: response.statusCode, errorResponse: "Invalid Response");
+    } on Exception catch (e) {
+      return ServiceExeptions.cases(e);
+    }
+  }
 }

@@ -10,6 +10,8 @@ class Urls {
   static const String kBlockVendors = "$kBASEURL/admin/vm/blockStatus";
   static const String kBlockSports = "$kBASEURL/admin/sports";
   static const String kBlockVenue = "$kBASEURL/admin/turf/block";
+  static const String kApproveVenue = "$kBASEURL/admin/turf/approve";
+  static const String kRejectVenue = "$kBASEURL/admin/turf/";// should pass id as query params
 }
 
 class InvalidRespons {

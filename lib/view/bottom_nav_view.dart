@@ -22,8 +22,10 @@ class BottomNavView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
+       ));
     final bottomBarVieModel = Provider.of<BottomNavViewModel>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -54,9 +56,7 @@ class BottomNavView extends StatelessWidget {
             ),
           ),
           BottomNavigationBarItem(
-            label: "Venue",
-            icon: Icon(CupertinoIcons.sportscourt)
-          ),
+              label: "Venue", icon: Icon(CupertinoIcons.sportscourt)),
           BottomNavigationBarItem(
             label: "Dashboard",
             icon: Icon(

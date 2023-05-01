@@ -34,6 +34,7 @@ class AlertBoxWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
                 elevation: 0,
+                
               ),
               child: const Text('Cancel'),
             ),
@@ -42,6 +43,7 @@ class AlertBoxWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: blockStatus ? AppColors.green : AppColors.red,
                 elevation: 0,
+                
               ),
               child: Text(blockText),
             ),

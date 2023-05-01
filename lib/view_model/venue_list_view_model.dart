@@ -9,8 +9,7 @@ import '../repository/services.dart';
 import '../utils/constants.dart';
 import '../utils/global_keys.dart';
 
-class VenueDataViewModel with ChangeNotifier{
-
+class VenueDataViewModel with ChangeNotifier {
   VenueDataViewModel() {
     getVenueDataModel();
   }
@@ -22,6 +21,8 @@ class VenueDataViewModel with ChangeNotifier{
   VenueDataModel? get venueDataModel => _venueDataModel;
   List<Response> get venueDataList => _venueDataList;
   bool get isVenueLoading => _isVenueDataLoading;
+
+  /// GET ALL THE VENUE DATAS
 
   getVenueDataModel() async {
     setVenueLoading(true);
@@ -46,6 +47,8 @@ class VenueDataViewModel with ChangeNotifier{
     }
   }
 
+  /// GET THE BLOCK STATUS OF VENUE
+
   getVenueBlockStatus({required String venueId}) async {
     final accessToken = await getAccessToken();
 
@@ -60,6 +63,46 @@ class VenueDataViewModel with ChangeNotifier{
     }
     if (response is Failure) {
       log("VenueBlock failed");
+    }
+    notifyListeners();
+  }
+
+  /// GET THE APPROVAL STATUS OF VENUE
+
+  getVenueApprovalStatus({required String venueId}) async {
+    final accessToken = await getAccessToken();
+
+    final response = await ApiServices.putMethod(
+      url: Urls.kApproveVenue,
+      body: {"id": venueId},
+      headers: {"Authorization": accessToken!},
+    );
+    if (response is Success) {
+      log("Venue approved");
+      log(venueId);
+      setVenueApprove(venueId);
+    }
+    if (response is Failure) {
+      log("Venueapprove failed");
+    }
+    notifyListeners();
+  }
+
+  /// REJECT THE VENUE
+  getVenueRejectStatus({required String venueId}) async {
+    final accessToken = await getAccessToken();
+
+    final response = await ApiServices.deleteMethod(
+      url: Urls.kRejectVenue + venueId,
+      headers: {"Authorization": accessToken!},
+    );
+    if (response is Success) {
+      log("Venue Rejected");
+      log(venueId);
+      setVenueReject(venueId);
+    }
+    if (response is Failure) {
+      log("VenueReject failed");
     }
     notifyListeners();
   }
@@ -86,6 +129,24 @@ class VenueDataViewModel with ChangeNotifier{
     }
   }
 
+  setVenueApprove(String venueId) {
+    if (_venueDataList.any((data) => data.id == venueId)) {
+      final index =
+          _venueDataList.indexWhere((venueIndex) => venueIndex.id == venueId);
+      _venueDataList[index].approved = true;
+      notifyListeners();
+    }
+  }
+
+  setVenueReject(String venueId) {
+    if (_venueDataList.any((data) => data.id == venueId)) {
+      final venueData =
+          _venueDataList.firstWhere((venue) => venue.id == venueId);
+      _venueDataList.remove(venueData);
+      notifyListeners();
+    }
+  }
+
   setVenueLoading(bool loading) {
     _isVenueDataLoading = loading;
   }
@@ -95,5 +156,4 @@ class VenueDataViewModel with ChangeNotifier{
     final accessToken = sharedPref.getString(GlobalKeys.accesToken);
     return accessToken;
   }
-
 }
