@@ -75,3 +75,32 @@ class VmsData {
         "__v": v,
     };
 }
+
+VendorStatusModel vendorStatusModelFromJson(String str) => VendorStatusModel.fromJson(json.decode(str));
+
+String vendorStatusModelToJson(VendorStatusModel data) => json.encode(data.toJson());
+
+class VendorStatusModel {
+    String? vmId;
+    String? status;
+    String? reason;
+
+    VendorStatusModel({
+        this.vmId,
+        this.status,
+        this.reason,
+    });
+
+    factory VendorStatusModel.fromJson(Map<String, dynamic> json) => VendorStatusModel(
+        vmId: json["vmId"],
+        status: json["status"],
+        reason: json["reason"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "vmId": vmId,
+        "status": status,
+        "reason": reason,
+    };
+}
+

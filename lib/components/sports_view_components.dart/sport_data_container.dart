@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/alert_box_widget.dart';
+import 'package:sportner_admin/components/glass_snack_bar.dart';
 import '../../utils/global_colors.dart';
 import '../../utils/global_values.dart';
 import '../../utils/text_styles.dart';
@@ -63,14 +64,17 @@ class SportDataContainerWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _sportsStatusButton(context, sportsData, sportFacility),
-                  AppSizes.kWidth10,
                   Expanded(
-                    child: Text(
-                      sportFacility.facility!,
-                      style: AppTextStyles.textH5,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        sportFacility.facility!,
+                        style: AppTextStyles.textH5,
+                      ),
                     ),
                   ),
+                  AppSizes.kWidth10,
+                  _sportsStatusButton(context, sportsData, sportFacility),
                 ],
               ),
             ),
@@ -86,13 +90,23 @@ class SportDataContainerWidget extends StatelessWidget {
       onTap: () {
         AlertBoxWidget.alertBox(
           context: context,
-          blockButton: ()  {
-             context.read<SportsDataViewModel>().getSportsBlockStatus(
+          blockButton: () {
+            context.read<SportsDataViewModel>().getSportsBlockStatus(
                   sportsId: sportsData.id!,
                   facilityId: sportFacility.id!,
                   facility: sportFacility.facility!,
                   status: !sportFacility.status!,
                 );
+            GlassSnackBar.snackBar(
+              context: context,
+              color: sportFacility.status == true
+                  ? Colors.redAccent
+                  : AppColors.appColor,
+              title:
+                  "${sportFacility.status == true ? "Disabled" : "Enabled"} facility !",
+              subtitle:
+                  "${sportsData.sport} ${sportFacility.facility} ${sportFacility.status == true ? "Disabled" : "Enabled"} Successfully!",
+            );
             Navigator.pop(context);
           },
           blockStatus: !sportFacility.status!,

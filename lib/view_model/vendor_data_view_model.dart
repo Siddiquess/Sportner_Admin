@@ -13,6 +13,7 @@ class VendorDataViewModel with ChangeNotifier {
     getVendorDataModel();
   }
 
+  TextEditingController? reasonController = TextEditingController();
   VendorDataModel? _vendorDataModel;
   List<VmsData> _vendorDataList = [];
   bool _isVendorDataLoading = false;
@@ -62,6 +63,31 @@ class VendorDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  getVendorAprrovalStatus({
+    required String vendorId,
+    required String status,
+  }) async {
+    final accessToken = await getAccessToken();
+
+    final response = await ApiServices.putMethod(
+      url: Urls.kVendorStatus,
+      body: {
+        "vmId": vendorId,
+        "status": status,
+        "reason": reasonController?.text??""
+      },
+      headers: {"Authorization": accessToken!},
+    );
+    if (response is Success) {
+      log("Vendor accept reject success");
+      _setVendorApprovalStatus(vendorId,status);
+    }
+    if (response is Failure) {
+      log("VendorBlock accept reject  failed");
+    }
+    notifyListeners();
+  }
+
   setVendorDataModel(VendorDataModel vendorData) {
     _vendorDataModel = vendorData;
     if (_vendorDataModel != null) {
@@ -77,9 +103,17 @@ class VendorDataViewModel with ChangeNotifier {
 
   setVendorBlock(String vendorId) {
     if (_vendorDataList.any((data) => data.id == vendorId)) {
-      final index =
-          _vendorDataList.indexWhere((vendorIndex) => vendorIndex.id == vendorId);
+      final index = _vendorDataList
+          .indexWhere((vendorIndex) => vendorIndex.id == vendorId);
       _vendorDataList[index].blockStatus = !_vendorDataList[index].blockStatus!;
+      notifyListeners();
+    }
+  }
+  _setVendorApprovalStatus(String vendorId,String status) {
+    if (_vendorDataList.any((data) => data.id == vendorId)) {
+      final index = _vendorDataList
+          .indexWhere((vendorIndex) => vendorIndex.id == vendorId);
+      _vendorDataList[index].status = status;
       notifyListeners();
     }
   }

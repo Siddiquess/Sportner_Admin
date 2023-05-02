@@ -11,6 +11,7 @@ class Urls {
   static const String kBlockSports = "$kBASEURL/admin/sports";
   static const String kBlockVenue = "$kBASEURL/admin/turf/block";
   static const String kApproveVenue = "$kBASEURL/admin/turf/approve";
+  static const String kVendorStatus = "$kBASEURL/admin/vm/status";
   static const String kRejectVenue = "$kBASEURL/admin/turf/";// should pass id as query params
 }
 

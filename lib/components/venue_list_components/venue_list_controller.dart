@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/alert_box_widget.dart';
+import 'package:sportner_admin/components/glass_snack_bar.dart';
+import 'package:sportner_admin/view/venue_details_view.dart';
 
 import '../../utils/global_colors.dart';
 import '../../utils/global_values.dart';
@@ -46,7 +48,7 @@ class VenueControllerWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              _showDetailsButton()
+              _showDetailsButton(context, indexV)
             ],
           ),
         );
@@ -54,12 +56,19 @@ class VenueControllerWidget extends StatelessWidget {
     );
   }
 
-  Row _showDetailsButton() {
+  Row _showDetailsButton(BuildContext context, int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VenueDetailsView(index: index),
+              ),
+            );
+          },
           style: const ButtonStyle(
             textStyle: MaterialStatePropertyAll(
               TextStyle(
@@ -95,35 +104,27 @@ class VenueControllerWidget extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-          
-
             AlertBoxWidget.alertBox(
               context: context,
               blockButton: () {
                 context
                     .read<VenueDataViewModel>()
-                    .getVenueApprovalStatus(
-                        venueId: venueData.id!);
+                    .getVenueApprovalStatus(venueId: venueData.id!);
                 Navigator.pop(context);
+                GlassSnackBar.snackBar(
+                  context: context,
+                  title: "Venue Approved",
+                  subtitle: "Venue approved successfully!",
+                );
               },
               blockStatus: !venueData.approved!,
               title: "Venue",
-              blockText: "Approve"
+              blockText: "Approve",
             );
           },
-          child: Container(
-            height: 30,
-            width: 65,
-            decoration: BoxDecoration(
-              color: AppColors.green,
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Center(
-              child: Text(
-                "Approve",
-                style: AppTextStyles.textH5White,
-              ),
-            ),
+          child: _buttonContainer(
+            text: "Approve",
+            color: AppColors.green,
           ),
         ),
         AppSizes.kHeight10,
@@ -136,28 +137,44 @@ class VenueControllerWidget extends StatelessWidget {
                     .read<VenueDataViewModel>()
                     .getVenueRejectStatus(venueId: venueData.id!);
                 Navigator.pop(context);
+                GlassSnackBar.snackBar(
+                  context: context,
+                  color: Colors.redAccent,
+                  title: "Venue Rejected",
+                  subtitle: "Venue rejected successfully!",
+                );
               },
               blockStatus: venueData.isBlocked!,
               title: "Venue",
-              blockText:"Reject",
+              blockText: "Reject",
             );
           },
-          child: Container(
-            height: 30,
-            width: 65,
-            decoration: BoxDecoration(
-              color: AppColors.red,
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Center(
-              child: Text(
-                "Reject",
-                style: AppTextStyles.textH5White,
-              ),
-            ),
+          child: _buttonContainer(
+            text: "Reject",
+            color: AppColors.red,
           ),
         )
       ],
+    );
+  }
+
+  Widget _buttonContainer({
+    required String text,
+    required Color color,
+  }) {
+    return Container(
+      height: 30,
+      width: 65,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: AppTextStyles.textH5White,
+        ),
+      ),
     );
   }
 
@@ -171,25 +188,23 @@ class VenueControllerWidget extends StatelessWidget {
                 .read<VenueDataViewModel>()
                 .getVenueBlockStatus(venueId: venueData.id!);
             Navigator.pop(context);
+            GlassSnackBar.snackBar(
+              context: context,
+              color: venueData.isBlocked! ? AppColors.green : Colors.redAccent,
+              title:
+                  "${venueData.isBlocked! ? "Unblocked" : "Blocked"} Venue !",
+              subtitle:
+                  "${venueData.venueName} ${venueData.isBlocked! ? "Unblocked" : "Blocked"} Successfully !",
+            );
           },
           blockStatus: venueData.isBlocked!,
           title: "Venue",
           blockText: venueData.isBlocked! ? "Unblock" : "Block",
         );
       },
-      child: Container(
-        height: 30,
-        width: 65,
-        decoration: BoxDecoration(
-          color: venueData.isBlocked! ? AppColors.green : AppColors.red,
-          borderRadius: BorderRadius.circular(3),
-        ),
-        child: Center(
-          child: Text(
-            venueData.isBlocked! ? "Unblock" : "Block",
-            style: AppTextStyles.textH5White,
-          ),
-        ),
+      child: _buttonContainer(
+        text: venueData.isBlocked! ? "Unblock" : "Block",
+        color: venueData.isBlocked! ? AppColors.green : AppColors.red,
       ),
     );
   }
@@ -218,9 +233,30 @@ class VenueControllerWidget extends StatelessWidget {
       flex: 3,
       child: Padding(
         padding: const EdgeInsets.only(right: 20),
-        child: Text(
-          venueData.venueName!,
-          style: AppTextStyles.textH4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 90,
+              width: 90,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: AppColors.lightgrey,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Image.network(
+                  venueData.image!,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            AppSizes.kHeight10,
+            Text(
+              venueData.venueName!,
+              style: AppTextStyles.textH4,
+            ),
+          ],
         ),
       ),
     );

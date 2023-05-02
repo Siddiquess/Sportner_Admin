@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../model/vendor_data_model.dart';
 import '../../utils/global_colors.dart';
 
-
 class UserVendorListWidget extends StatelessWidget {
-
   final String name;
   final String mobile;
   final bool blockStatus;
   final GestureTapCallback? onTap;
   final GestureTapCallback blockButton;
+  final VmsData? vendorData;
+  final GestureTapCallback? vmAcceptButton;
   const UserVendorListWidget({
     super.key,
     required this.name,
@@ -16,6 +17,8 @@ class UserVendorListWidget extends StatelessWidget {
     required this.blockStatus,
     required this.onTap,
     required this.blockButton,
+    this.vendorData,
+    this.vmAcceptButton,
   });
 
   @override
@@ -61,17 +64,26 @@ class UserVendorListWidget extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: blockStatus == true
-                        ? AppColors.lightgreen
-                        : AppColors.lightred,
+                    color: vendorData?.status == "pending"
+                        ? const Color.fromARGB(65, 255, 193, 7)
+                        : blockStatus == true
+                            ? AppColors.lightgreen
+                            : AppColors.lightred,
                   ),
                   child: Center(
                     child: IconButton(
-                      onPressed: blockButton,
+                      onPressed: vendorData?.status == "pending"
+                          ? vmAcceptButton
+                          : blockButton,
                       splashRadius: 5,
                       icon: Icon(
-                        Icons.person,
-                        color: blockStatus ? AppColors.green : AppColors.red,
+                        blockStatus?
+                        Icons.person_off:Icons.person,
+                        color: vendorData?.status == "pending"
+                            ? Colors.amber
+                            : blockStatus
+                                ? AppColors.green
+                                : AppColors.red,
                       ),
                     ),
                   ),

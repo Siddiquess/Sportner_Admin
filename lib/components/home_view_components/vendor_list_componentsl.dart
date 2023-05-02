@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/alert_box_widget.dart';
+import 'package:sportner_admin/components/glass_snack_bar.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
 import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import '../../utils/global_values.dart';
@@ -14,44 +15,36 @@ class VendorListComponents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vendorViewModel = context.watch<VendorDataViewModel>();
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          AppSizes.kHeight20,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(Icons.group),
-                Text("Vendors", style: AppTextStyles.textH2),
+                Text("Name", style: AppTextStyles.textH4),
+                Text("Mobile", style: AppTextStyles.textH4),
+                Text("Status", style: AppTextStyles.textH4)
               ],
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text("View all"),
+          ),
+          const Divider(thickness: 1.5),
+          AppSizes.kHeight5,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color.fromARGB(44, 158, 158, 158),
             ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Name", style: AppTextStyles.textH4),
-            Text("Mobile", style: AppTextStyles.textH4),
-            Text("Status", style: AppTextStyles.textH4)
-          ],
-        ),
-        const Divider(thickness: 1.5),
-        AppSizes.kHeight5,
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(44, 158, 158, 158),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _vendorListWidget(vendorViewModel: vendorViewModel),
-          ),
-        )
-      ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _vendorListWidget(vendorViewModel: vendorViewModel),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -69,12 +62,38 @@ _vendorListWidget({required VendorDataViewModel vendorViewModel}) {
         mobile: vendorData.mobile ?? "No mobile",
         blockStatus: vendorData.blockStatus!,
         onTap: () {},
+        vendorData: vendorData,
+        vmAcceptButton: () {
+          AlertBoxWidget.alertBox(
+            context: context,
+            blockButton: () {
+              vendorViewModel.getVendorAprrovalStatus(
+                vendorId: vendorData.id!,
+                status: "approved",
+              );
+              Navigator.pop(context);
+            },
+            blockStatus: true,
+            title: "Vendor",
+            blockText: "Accept",
+          );
+        },
         blockButton: () {
           AlertBoxWidget.alertBox(
             context: context,
             blockButton: () {
               vendorViewModel.getVendorBlockStatus(
                 vendorId: vendorData.id!,
+              );
+              GlassSnackBar.snackBar(
+                context: context,
+                color:
+                    vendorData.blockStatus! ? Colors.green : Colors.redAccent,
+                title: vendorData.blockStatus!
+                    ? "Unblocked Vendor!"
+                    : "Blocked Vendor!",
+                subtitle:
+                    "Vendor ${vendorData.blockStatus! ? "Unblocked" : "Blocked"} Successfully!",
               );
               Navigator.pop(context);
             },

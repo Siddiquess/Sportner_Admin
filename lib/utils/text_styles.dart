@@ -48,6 +48,7 @@ class AppTextStyles {
   );
   static TextStyle textH2 = const TextStyle(
     fontSize: 18,
+    color: AppColors.black,
     fontWeight: FontWeight.w600,
   );
   static TextStyle textH1 = const TextStyle(

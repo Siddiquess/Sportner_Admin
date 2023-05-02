@@ -4,12 +4,13 @@ import '../utils/global_colors.dart';
 import '../utils/text_styles.dart';
 
 class AlertBoxWidget {
-  static alertBox(
-      {required BuildContext context,
-      required GestureTapCallback blockButton,
-      required bool blockStatus,
-      required String title,
-      required String blockText}) {
+  static alertBox({
+    required BuildContext context,
+    required GestureTapCallback blockButton,
+    required bool blockStatus,
+    required String title,
+    required String blockText,
+  }) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -34,7 +35,6 @@ class AlertBoxWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
                 elevation: 0,
-                
               ),
               child: const Text('Cancel'),
             ),
@@ -43,7 +43,6 @@ class AlertBoxWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: blockStatus ? AppColors.green : AppColors.red,
                 elevation: 0,
-                
               ),
               child: Text(blockText),
             ),

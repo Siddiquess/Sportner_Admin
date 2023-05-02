@@ -83,6 +83,7 @@ class MyApp extends StatelessWidget {
           "/adminLoginScreen": (context) => const AdminLoginScreen(),
           "/homeScreen": (context) => const HomeScreenView(),
           "/mainScreen": (context) =>  BottomNavView(),
+          
         },
         initialRoute: "/splashScreen",
       ),
