@@ -13,7 +13,7 @@ class VendorDataViewModel with ChangeNotifier {
     getVendorDataModel();
   }
 
-  TextEditingController? reasonController = TextEditingController();
+  TextEditingController reasonController = TextEditingController();
   VendorDataModel? _vendorDataModel;
   List<VmsData> _vendorDataList = [];
   bool _isVendorDataLoading = false;
@@ -21,6 +21,10 @@ class VendorDataViewModel with ChangeNotifier {
   VendorDataModel? get vendorDataModel => _vendorDataModel;
   List<VmsData> get vendorDataList => _vendorDataList;
   bool get isVendorLoading => _isVendorDataLoading;
+
+  notifyListen() {
+    notifyListeners();
+  }
 
   getVendorDataModel() async {
     setVendorLoading(true);
@@ -63,7 +67,7 @@ class VendorDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  getVendorAprrovalStatus({
+  getVendorApprovalStatus({
     required String vendorId,
     required String status,
   }) async {
@@ -74,17 +78,23 @@ class VendorDataViewModel with ChangeNotifier {
       body: {
         "vmId": vendorId,
         "status": status,
-        "reason": reasonController?.text??""
+        "reason": reasonController.text
       },
       headers: {"Authorization": accessToken!},
     );
     if (response is Success) {
       log("Vendor accept reject success");
-      _setVendorApprovalStatus(vendorId,status);
+      _setVendorApprovalStatus(vendorId, status);
+      clearReasonController();
     }
     if (response is Failure) {
       log("VendorBlock accept reject  failed");
     }
+    notifyListeners();
+  }
+
+  clearReasonController() {
+    reasonController.clear();
     notifyListeners();
   }
 
@@ -109,7 +119,8 @@ class VendorDataViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
-  _setVendorApprovalStatus(String vendorId,String status) {
+
+  _setVendorApprovalStatus(String vendorId, String status) {
     if (_vendorDataList.any((data) => data.id == vendorId)) {
       final index = _vendorDataList
           .indexWhere((vendorIndex) => vendorIndex.id == vendorId);

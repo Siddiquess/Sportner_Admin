@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sportner_admin/utils/global_colors.dart';
 import 'package:sportner_admin/utils/text_styles.dart';
+import 'package:sportner_admin/view_model/sport_data_view_model.dart';
 import '../components/sports_view_components.dart/sport_data_container.dart';
 import '../utils/global_values.dart';
 
@@ -20,29 +22,34 @@ class SportsListView extends StatelessWidget {
         backgroundColor: AppColors.appColor,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AppSizes.kHeight20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Sport", style: AppTextStyles.textH4),
-                  Text("Logo", style: AppTextStyles.textH4),
-                  Text("Facility", style: AppTextStyles.textH4)
-                ],
-              ),
-              const Divider(thickness: 1.5),
-              AppSizes.kHeight5,
-              const SportDataContainerWidget(),
-            ],
+      body: RefreshIndicator(
+        color: AppColors.appColor,
+        onRefresh: () async {
+          await context.read<SportsDataViewModel>().getSportsDataModel();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                AppSizes.kHeight20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Sport", style: AppTextStyles.textH4),
+                    Text("Logo", style: AppTextStyles.textH4),
+                    Text("Facility", style: AppTextStyles.textH4)
+                  ],
+                ),
+                const Divider(thickness: 1.5),
+                AppSizes.kHeight5,
+                const SportDataContainerWidget(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-

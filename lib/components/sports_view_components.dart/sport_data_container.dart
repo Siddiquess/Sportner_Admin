@@ -19,6 +19,7 @@ class SportDataContainerWidget extends StatelessWidget {
     return ListView.separated(
       itemCount: sportViewModel.sportsDataList.length,
       shrinkWrap: true,
+      physics: const ScrollPhysics(),
       separatorBuilder: (context, index) => AppSizes.kHeight10,
       itemBuilder: (BuildContext context, int index) {
         final sportsData = sportViewModel.sportsDataList[index];
@@ -50,6 +51,7 @@ class SportDataContainerWidget extends StatelessWidget {
       child: ListView.separated(
         itemCount: sportsData.facilityDetails!.length,
         shrinkWrap: true,
+        physics: const ScrollPhysics(),
         separatorBuilder: (context, index) => AppSizes.kHeight5,
         itemBuilder: (context, index) {
           final sportFacility = sportsData.facilityDetails![index];

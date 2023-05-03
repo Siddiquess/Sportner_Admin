@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/home_view_components/userlist_components.dart';
 import 'package:sportner_admin/utils/global_colors.dart';
 import 'package:sportner_admin/view_model/login_view_model.dart';
+import 'package:sportner_admin/view_model/user_data_view_model.dart';
+import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import '../components/home_view_components/vendor_list_componentsl.dart';
 import '../components/normal_alert_box.dart';
 
@@ -35,10 +37,32 @@ class HomeScreenView extends StatelessWidget {
                 _vendorTabBar(),
               ]),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            UserListComponents(),
-            VendorListComponents(),
+            RefreshIndicator(
+              color: AppColors.appColor,
+              onRefresh: () async {
+                return await context
+                    .read<UserDataViewModel>()
+                    .getUserDataModel();
+              },
+              child: const SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: UserListComponents(),
+              ),
+            ),
+            RefreshIndicator(
+              color: AppColors.appColor,
+              onRefresh: () async {
+                return await context
+                    .read<VendorDataViewModel>()
+                    .getVendorDataModel();
+              },
+              child: const SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: VendorListComponents(),
+              ),
+            ),
           ],
         ),
       ),

@@ -59,35 +59,43 @@ class UserVendorListWidget extends StatelessWidget {
               ),
               Expanded(
                 flex: 1,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: vendorData?.status == "pending"
-                        ? const Color.fromARGB(65, 255, 193, 7)
-                        : blockStatus == true
-                            ? AppColors.lightgreen
-                            : AppColors.lightred,
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      onPressed: vendorData?.status == "pending"
-                          ? vmAcceptButton
-                          : blockButton,
-                      splashRadius: 5,
-                      icon: Icon(
-                        blockStatus?
-                        Icons.person_off:Icons.person,
-                        color: vendorData?.status == "pending"
-                            ? Colors.amber
-                            : blockStatus
-                                ? AppColors.green
-                                : AppColors.red,
+                child: vendorData?.status == "rejected"
+                    ? const Text(
+                        "Rejected",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                        ),
+                      )
+                    : Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: vendorData?.status == "pending"
+                              ? const Color.fromARGB(65, 255, 193, 7)
+                              : blockStatus == true
+                                  ? AppColors.lightgreen
+                                  : AppColors.lightred,
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            onPressed: vendorData?.status == "pending"
+                                ? vmAcceptButton
+                                : blockButton,
+                            splashRadius: 5,
+                            icon: Icon(
+                              blockStatus ? Icons.person_off : Icons.person,
+                              color: vendorData?.status == "pending"
+                                  ? Colors.amber
+                                  : blockStatus
+                                      ? AppColors.green
+                                      : AppColors.red,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               )
             ],
           ),

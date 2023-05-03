@@ -48,17 +48,18 @@ class TextFormWidget extends StatelessWidget {
           suffixIcon: isPassword && passController.text.isNotEmpty
               ? Consumer<LoginViewModel>(
                   builder: (context, loginViewModel, child) {
-                  return InkWell(
-                    onTap: () {
-                      loginViewModel.setShowPassword();
-                    },
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    child: isShowPassword
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.visibility),
-                  );
-                })
+                    return InkWell(
+                      onTap: () {
+                        loginViewModel.setShowPassword();
+                      },
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      child: isShowPassword
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                    );
+                  },
+                )
               : AppSizes.kHeight10,
           labelText: labelText,
           labelStyle: const TextStyle(

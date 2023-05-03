@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sportner_admin/view/admin_login_view.dart';
-import 'package:sportner_admin/view/bottom_nav_view.dart';
-import 'package:sportner_admin/view/home_view.dart';
-import 'package:sportner_admin/view/splash_screen_view.dart';
 import 'package:sportner_admin/view_model/bottom_nav_view_model.dart';
 import 'package:sportner_admin/view_model/dashboard_view_model.dart';
 import 'package:sportner_admin/view_model/user_data_view_model.dart';
 import 'package:sportner_admin/view_model/login_view_model.dart';
 import 'package:sportner_admin/view_model/vendor_data_view_model.dart';
 import 'utils/global_colors.dart';
+import 'utils/routes/screen_routes.dart';
 import 'view_model/sport_data_view_model.dart';
 import 'view_model/venue_list_view_model.dart';
 
@@ -67,24 +64,18 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          brightness: Brightness.light,
-          appBarTheme:  AppBarTheme(
+          appBarTheme: AppBarTheme(
             iconTheme: const IconThemeData(color: AppColors.black),
             backgroundColor: AppColors.scaffoldColor.withAlpha(2),
-              titleTextStyle: const TextStyle(
-                color: AppColors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              elevation: 0),
+            titleTextStyle: const TextStyle(
+              color: AppColors.black,
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
+            ),
+            elevation: 0,
+          ),
         ),
-        routes: {
-          "/splashScreen": (context) => const SplashScreen(),
-          "/adminLoginScreen": (context) => const AdminLoginScreen(),
-          "/homeScreen": (context) => const HomeScreenView(),
-          "/mainScreen": (context) =>  BottomNavView(),
-          
-        },
+        routes: ScreenRoutes.routes,
         initialRoute: "/splashScreen",
       ),
     );
