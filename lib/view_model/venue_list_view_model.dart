@@ -16,11 +16,13 @@ class VenueDataViewModel with ChangeNotifier {
 
   VenueDataModel? _venueDataModel;
   List<Response> _venueDataList = [];
-  bool _isVenueDataLoading = false;
+  int? _errorCode;
+  bool _isLoading = false;
 
   VenueDataModel? get venueDataModel => _venueDataModel;
   List<Response> get venueDataList => _venueDataList;
-  bool get isVenueLoading => _isVenueDataLoading;
+  int? get errorCode => _errorCode;
+  bool get isLoading => _isLoading;
 
   /// GET ALL THE VENUE DATAS
 
@@ -43,6 +45,7 @@ class VenueDataViewModel with ChangeNotifier {
 
     if (response is Failure) {
       setVenueLoading(false);
+      setError(response);
       log("Venue Data failed");
     }
   }
@@ -120,6 +123,11 @@ class VenueDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  setError(Failure error) {
+    _errorCode = error.code;
+    notifyListeners();
+  }
+
   setVenueBlock(String venueId) {
     if (_venueDataList.any((data) => data.id == venueId)) {
       final index =
@@ -148,7 +156,7 @@ class VenueDataViewModel with ChangeNotifier {
   }
 
   setVenueLoading(bool loading) {
-    _isVenueDataLoading = loading;
+    _isLoading = loading;
   }
 
   Future<String?> getAccessToken() async {

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportner_admin/model/vendor_data_model.dart';
@@ -15,12 +14,14 @@ class VendorDataViewModel with ChangeNotifier {
 
   TextEditingController reasonController = TextEditingController();
   VendorDataModel? _vendorDataModel;
+  int? _errorCode;
   List<VmsData> _vendorDataList = [];
-  bool _isVendorDataLoading = false;
+  bool _isLoading = false;
 
   VendorDataModel? get vendorDataModel => _vendorDataModel;
   List<VmsData> get vendorDataList => _vendorDataList;
-  bool get isVendorLoading => _isVendorDataLoading;
+  int? get errorCode => _errorCode;
+  bool get isLoading => _isLoading;
 
   notifyListen() {
     notifyListeners();
@@ -45,6 +46,7 @@ class VendorDataViewModel with ChangeNotifier {
 
     if (response is Failure) {
       setVendorLoading(false);
+      setError(response);
       log("Vendor Data failed");
     }
   }
@@ -111,6 +113,11 @@ class VendorDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  setError(Failure error) {
+    _errorCode = error.code;
+    notifyListen();
+  }
+
   setVendorBlock(String vendorId) {
     if (_vendorDataList.any((data) => data.id == vendorId)) {
       final index = _vendorDataList
@@ -130,7 +137,7 @@ class VendorDataViewModel with ChangeNotifier {
   }
 
   setVendorLoading(bool loading) {
-    _isVendorDataLoading = loading;
+    _isLoading = loading;
   }
 
   Future<String?> getAccessToken() async {

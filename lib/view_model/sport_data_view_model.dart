@@ -14,11 +14,13 @@ class SportsDataViewModel with ChangeNotifier {
 
   SportsDataModel? _sportsDataModel;
   List<SportsData> _sportsDataList = [];
-  bool _isSportsDataLoading = false;
+  int? _errorCode;
+  bool _isLoading = false;
 
   SportsDataModel? get sportsDataModel => _sportsDataModel;
   List<SportsData> get sportsDataList => _sportsDataList;
-  bool get isSportsLoading => _isSportsDataLoading;
+  int? get errorCode => _errorCode;
+  bool get isLoading => _isLoading;
 
   getSportsDataModel() async {
     _setSportsLoading(true);
@@ -39,6 +41,7 @@ class SportsDataViewModel with ChangeNotifier {
 
     if (response is Failure) {
       _setSportsLoading(false);
+      setError(response);
       log("Sports Data failed");
     }
   }
@@ -88,6 +91,11 @@ class SportsDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  setError(Failure error) {
+    _errorCode = error.code;
+    notifyListeners();
+  }
+
   _setSportsBlock({
     required String sportsId,
     required String facilityId,
@@ -127,7 +135,7 @@ class SportsDataViewModel with ChangeNotifier {
   }
 
   _setSportsLoading(bool loading) {
-    _isSportsDataLoading = loading;
+    _isLoading = loading;
   }
 
   Future<String?> getAccessToken() async {

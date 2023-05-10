@@ -14,11 +14,13 @@ class UserDataViewModel with ChangeNotifier {
 
   UserDataModel? _userDataModel;
   List<UserData> _userDataList = [];
-  bool _isUserDataLoading = false;
+  int? _errorCode;
+  bool _isLoading = false;
 
   UserDataModel? get userDataModel => _userDataModel;
   List<UserData> get userDataList => _userDataList;
-  bool get isUserLoading => _isUserDataLoading;
+  int? get errorCode => _errorCode;
+  bool get isLoading => _isLoading;
 
   getUserDataModel() async {
     setUserLoading(true);
@@ -38,6 +40,7 @@ class UserDataViewModel with ChangeNotifier {
     }
 
     if (response is Failure) {
+      setError(response);
       setUserLoading(false);
       log("User Data failed");
     }
@@ -74,6 +77,11 @@ class UserDataViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  setError(Failure error) {
+    _errorCode = error.code;
+    notifyListeners();
+  }
+
   setUserBlock(String userId) {
     if (_userDataList.any((data) => data.id == userId)) {
       final index =
@@ -84,7 +92,7 @@ class UserDataViewModel with ChangeNotifier {
   }
 
   setUserLoading(bool loading) {
-    _isUserDataLoading = loading;
+    _isLoading = loading;
   }
 
   Future<String?> getAccessToken() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sportner_admin/components/error_widget.dart';
 import 'package:sportner_admin/utils/global_colors.dart';
 import 'package:sportner_admin/view_model/venue_list_view_model.dart';
 
@@ -26,29 +27,36 @@ class VenueListView extends StatelessWidget {
       body: RefreshIndicator(
         color: AppColors.appColor,
         onRefresh: () => context.read<VenueDataViewModel>().getVenueDataModel(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                AppSizes.kHeight20,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Consumer<VenueDataViewModel>(
+          builder: (context, venueViewModel, child) {
+            return 
+            venueViewModel.errorCode == 404?
+            const NoInternetWidget():
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text("Venue Name", style: AppTextStyles.textH4),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 45),
-                      child: Text("Sports", style: AppTextStyles.textH4),
+                    AppSizes.kHeight20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Venue Name", style: AppTextStyles.textH4),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 45),
+                          child: Text("Sports", style: AppTextStyles.textH4),
+                        ),
+                        Text("Status", style: AppTextStyles.textH4)
+                      ],
                     ),
-                    Text("Status", style: AppTextStyles.textH4)
+                    const Divider(thickness: 1.5),
+                    AppSizes.kHeight5,
+                     const VenueControllerWidget(),
                   ],
                 ),
-                const Divider(thickness: 1.5),
-                AppSizes.kHeight5,
-                 const VenueControllerWidget(),
-              ],
-            ),
-          ),
+              ),
+            );
+          }
         ),
       ),
     );

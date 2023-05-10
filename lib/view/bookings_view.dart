@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sportner_admin/components/bookings_component/booking_pop_up.dart';
 import 'package:sportner_admin/components/bookings_component/bookings_card.dart';
-
 import '../components/error_widget.dart';
 import '../utils/global_colors.dart';
 import '../utils/global_values.dart';
@@ -23,6 +23,9 @@ class BookingsScreenView extends StatelessWidget {
           ),
         ),
         elevation: 0,
+        actions:const [
+          BookingsPopUpButton()
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () => bookingViewModel.getBookingDatas(),
@@ -49,7 +52,7 @@ class BookingsScreenView extends StatelessWidget {
                     children: [
                       AppSizes.kHeight10,
                       BookingCard(
-                        bookingDataList: bookingViewModel.bookingDataList,
+                        bookingDataList: bookingViewModel.allbookingList,
                       ),
                       AppSizes.kHeight30,
                     ],

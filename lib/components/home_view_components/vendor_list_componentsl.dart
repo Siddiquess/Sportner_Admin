@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sportner_admin/components/alert_box_widget.dart';
+import 'package:sportner_admin/components/error_widget.dart';
 import 'package:sportner_admin/components/glass_snack_bar.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
 import 'package:sportner_admin/components/home_view_components/vendor_accept_box.dart';
@@ -19,40 +21,48 @@ class VendorListComponents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vendorViewModel = context.watch<VendorDataViewModel>();
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          AppSizes.kHeight20,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Name", style: AppTextStyles.textH4),
-                Text("Mobile", style: AppTextStyles.textH4),
-                Text("Status", style: AppTextStyles.textH4)
-              ],
-            ),
-          ),
-          const Divider(thickness: 1.5),
-          AppSizes.kHeight5,
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(44, 158, 158, 158),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _vendorListWidget(vendorViewModel: vendorViewModel),
-            ),
+    return vendorViewModel.isLoading
+        ?  SizedBox(
+          height: 500.h,
+            child: const CircularProgressIndicator(),
           )
-        ],
-      ),
-    );
+        : vendorViewModel.errorCode == 404
+            ? SizedBox(height: 500.h, child: const NoInternetWidget())
+            : Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    AppSizes.kHeight20,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Name", style: AppTextStyles.textH4),
+                          Text("Mobile", style: AppTextStyles.textH4),
+                          Text("Status", style: AppTextStyles.textH4)
+                        ],
+                      ),
+                    ),
+                    const Divider(thickness: 1.5),
+                    AppSizes.kHeight5,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(44, 158, 158, 158),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child:
+                            _vendorListWidget(vendorViewModel: vendorViewModel),
+                      ),
+                    )
+                  ],
+                ),
+              );
   }
 
-   _vendorListWidget({required VendorDataViewModel vendorViewModel}) {
+  _vendorListWidget({required VendorDataViewModel vendorViewModel}) {
     return ListView.separated(
       shrinkWrap: true,
       physics: const ScrollPhysics(),

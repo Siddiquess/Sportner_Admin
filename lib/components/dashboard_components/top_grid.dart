@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sportner_admin/view_model/bookings_view_model.dart';
 
 import '../../model/dashboard_data_model.dart';
 import '../../utils/global_colors.dart';
@@ -22,7 +24,8 @@ class TopGrid extends StatelessWidget {
         children: [
           _bigContainer(
             title: "Bookings",
-            length: dashboardData.bookingsCount!,
+            subtitle: " Bookings",
+            length: "${dashboardData.bookingsCount!}",
             widget: const Icon(
               Icons.leaderboard_outlined,
               size: 35,
@@ -61,6 +64,7 @@ class BottomGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalEarning = context.watch<BookingViewModel>().totalEarnings;
     return SizedBox(
       height: 150,
       width: double.infinity,
@@ -85,7 +89,8 @@ class BottomGrid extends StatelessWidget {
           ),
           _bigContainer(
             title: "Earnings",
-            length: 0,
+            subtitle: ".0",
+            length: "₹$totalEarning",
             widget: const Icon(
               Icons.account_balance_wallet,
               size: 35,
@@ -141,7 +146,8 @@ Widget _smallContainer({
 
 Widget _bigContainer({
   required String title,
-  required int length,
+  required String subtitle,
+  required String length,
   required Widget widget,
 }) {
   return Container(
@@ -160,7 +166,7 @@ Widget _bigContainer({
           AppSizes.kHeight30,
           Text("Total $title", style: AppTextStyles.textH4grey),
           AppSizes.kHeight10,
-          Text("$length $title", style: AppTextStyles.textH3),
+          Text("$length$subtitle", style: AppTextStyles.textH3),
         ],
       ),
     ),

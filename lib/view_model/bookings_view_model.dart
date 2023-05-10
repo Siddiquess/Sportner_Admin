@@ -1,9 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../model/booking_data_model.dart';
 import '../repository/api_status.dart';
 import '../repository/services.dart';
@@ -16,10 +14,18 @@ class BookingViewModel with ChangeNotifier {
   }
 
   List<BookingDataModel> _bookingDataList = [];
+  List<BookingDataModel> _allbookingList = [];
+  final List<BookingDataModel> _pendingbookings = [];
+  final List<BookingDataModel> _completedBookings = [];
+  int _totalEarnings = 0;
   int? _errorCode;
   bool _isLoading = false;
 
   List<BookingDataModel> get bookingDataList => _bookingDataList;
+  List<BookingDataModel> get allbookingList => _allbookingList;
+  List<BookingDataModel> get pendingbookings => _pendingbookings;
+  List<BookingDataModel> get completedBookings => _completedBookings;
+  int get totalEarnings => _totalEarnings;
   bool get isLoading => _isLoading;
   int? get errorCode => _errorCode;
 
@@ -35,19 +41,56 @@ class BookingViewModel with ChangeNotifier {
     if (response is Success) {
       setLoading(false);
       log("success");
-      setBookingDatas(response.response as List<BookingDataModel>);
+      await setBookingDatas(response.response as List<BookingDataModel>);
+      getTotalEarnings();
     }
 
     if (response is Failure) {
       log("failed");
       setLoading(false);
-
       setErrorResponse(response);
     }
   }
 
   setBookingDatas(List<BookingDataModel> bookingDataList) {
     _bookingDataList = bookingDataList;
+    _allbookingList = bookingDataList;
+    setCompletedList();
+    setPendingList();
+    notifyListeners();
+  }
+
+  setSelectedPopUp(String value) {
+    _allbookingList = [];
+    if (value == "all") {
+      _allbookingList = _bookingDataList;
+    } else if (value == "pending") {
+      _allbookingList = _pendingbookings;
+    } else if (value == "completed") {
+      _allbookingList = _completedBookings;
+    }
+    notifyListeners();
+  }
+
+  setCompletedList() {
+    _completedBookings.clear();
+    for (var element in _bookingDataList) {
+      final isCompleted = isBookingExpired(element);
+      if (isCompleted) {
+        _completedBookings.add(element);
+      }
+    }
+    notifyListeners();
+  }
+
+  setPendingList() {
+    _pendingbookings.clear();
+    for (var element in _bookingDataList) {
+      final isCompleted = isBookingExpired(element);
+      if (!isCompleted) {
+        _pendingbookings.add(element);
+      }
+    }
     notifyListeners();
   }
 
@@ -71,6 +114,16 @@ class BookingViewModel with ChangeNotifier {
     String time12 = DateFormat('h:mm a').format(time);
 
     return time12;
+  }
+
+  getTotalEarnings() {
+    _totalEarnings = 0;
+    for (var element in _bookingDataList) {
+      if (element.refund != "processed") {
+        _totalEarnings += element.price ?? 0;
+        notifyListeners();
+      }
+    }
   }
 
   bool isBookingExpired(BookingDataModel bookedVenue) {

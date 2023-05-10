@@ -19,7 +19,6 @@ class ErrorDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
