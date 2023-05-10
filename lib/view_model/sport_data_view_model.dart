@@ -136,6 +136,7 @@ class SportsDataViewModel with ChangeNotifier {
 
   _setSportsLoading(bool loading) {
     _isLoading = loading;
+    notifyListeners();
   }
 
   Future<String?> getAccessToken() async {

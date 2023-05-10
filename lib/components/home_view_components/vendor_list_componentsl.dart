@@ -5,6 +5,7 @@ import 'package:sportner_admin/components/alert_box_widget.dart';
 import 'package:sportner_admin/components/error_widget.dart';
 import 'package:sportner_admin/components/glass_snack_bar.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
+import 'package:sportner_admin/components/home_view_components/user_vendor_loading.dart';
 import 'package:sportner_admin/components/home_view_components/vendor_accept_box.dart';
 import 'package:sportner_admin/components/vendor_details_box.dart';
 import 'package:sportner_admin/model/vendor_data_model.dart';
@@ -22,10 +23,7 @@ class VendorListComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     final vendorViewModel = context.watch<VendorDataViewModel>();
     return vendorViewModel.isLoading
-        ?  SizedBox(
-          height: 500.h,
-            child: const CircularProgressIndicator(),
-          )
+        ? const UserVendorLoading()
         : vendorViewModel.errorCode == 404
             ? SizedBox(height: 500.h, child: const NoInternetWidget())
             : Padding(

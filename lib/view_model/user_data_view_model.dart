@@ -93,6 +93,7 @@ class UserDataViewModel with ChangeNotifier {
 
   setUserLoading(bool loading) {
     _isLoading = loading;
+    notifyListeners();
   }
 
   Future<String?> getAccessToken() async {

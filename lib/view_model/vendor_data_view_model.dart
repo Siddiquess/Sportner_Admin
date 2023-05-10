@@ -138,6 +138,7 @@ class VendorDataViewModel with ChangeNotifier {
 
   setVendorLoading(bool loading) {
     _isLoading = loading;
+    notifyListen();
   }
 
   Future<String?> getAccessToken() async {

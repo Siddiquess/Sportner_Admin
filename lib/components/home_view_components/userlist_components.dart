@@ -5,6 +5,7 @@ import 'package:sportner_admin/components/alert_box_widget.dart';
 import 'package:sportner_admin/components/error_widget.dart';
 import 'package:sportner_admin/components/glass_snack_bar.dart';
 import 'package:sportner_admin/components/home_view_components/user_vendor_list.dart';
+import 'package:sportner_admin/components/home_view_components/user_vendor_loading.dart';
 import 'package:sportner_admin/view_model/user_data_view_model.dart';
 import '../../utils/global_values.dart';
 import '../../utils/text_styles.dart';
@@ -18,11 +19,7 @@ class UserListComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     final userViewModel = context.watch<UserDataViewModel>();
     return userViewModel.isLoading
-        ? const Center(
-            child: SizedBox(
-              child: CircularProgressIndicator(),
-            ),
-          )
+        ? const UserVendorLoading()
         : userViewModel.errorCode == 404
             ? SizedBox(height: 500.h, child: const NoInternetWidget())
             : userViewModel.userDataList.isEmpty

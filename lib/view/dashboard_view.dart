@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sportner_admin/components/dashboard_components/dashboard_loading_widget.dart';
 import 'package:sportner_admin/components/error_widget.dart';
 import 'package:sportner_admin/view_model/dashboard_view_model.dart';
 
@@ -14,9 +15,8 @@ class DashBoardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashViewModel= context.watch<DashBoardViewModel>();
-    final dashData = context.watch<DashBoardViewModel>().dashBoardData;
-  
+    final dashViewModel = context.watch<DashBoardViewModel>();
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -34,34 +34,38 @@ class DashBoardView extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child:dashViewModel.errorCode == 404?
-          const NoInternetWidget():
-           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: dashData == null
-                ? const Center(
-                    child: CircularProgressIndicator()
-                  )
-                : SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppSizes.kHeight20,
-                        Text(
-                          "Dashboard",
-                          style: AppTextStyles.textH1White,
-                        ),
-                        AppSizes.kHeight20,
-                        TopGrid(dashboardData: dashData),
-                        AppSizes.kHeight20,
-                        BottomGrid(dashboardData: dashData),
-                        AppSizes.kHeight20,
-                        SportsDataChart(),
-                      ],
+          child: dashViewModel.isLoading
+              ? const DashBoardLoadingWidget()
+              : dashViewModel.errorCode == 404
+                  ? const NoInternetWidget()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: dashViewModel.isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppSizes.kHeight20,
+                                  Text(
+                                    "Dashboard",
+                                    style: AppTextStyles.textH1White,
+                                  ),
+                                  AppSizes.kHeight20,
+                                  TopGrid(
+                                      dashboardData:
+                                          dashViewModel.dashBoardData!),
+                                  AppSizes.kHeight20,
+                                  BottomGrid(
+                                      dashboardData:
+                                          dashViewModel.dashBoardData),
+                                  AppSizes.kHeight20,
+                                  SportsDataChart(),
+                                ],
+                              ),
+                            ),
                     ),
-                  ),
-          ),
         ),
       ),
     );
