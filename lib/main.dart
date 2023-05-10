@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sportner_admin/view_model/bookings_view_model.dart';
 import 'package:sportner_admin/view_model/bottom_nav_view_model.dart';
 import 'package:sportner_admin/view_model/dashboard_view_model.dart';
 import 'package:sportner_admin/view_model/user_data_view_model.dart';
@@ -43,41 +45,50 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => VenueDataViewModel(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'Sportner Admin',
-        debugShowCheckedModeBanner: false,
-        builder: (context, child) {
-          return ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: child!,
-          );
-        },
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.scaffoldColor,
-          // primarySwatch: PrimaryColor.appColor,
-          primaryColor: AppColors.appColor,
-          elevatedButtonTheme: const ElevatedButtonThemeData(
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-                AppColors.appColor,
-              ),
-            ),
-          ),
-          appBarTheme: AppBarTheme(
-            iconTheme: const IconThemeData(color: AppColors.black),
-            backgroundColor: AppColors.scaffoldColor.withAlpha(2),
-            titleTextStyle: const TextStyle(
-              color: AppColors.black,
-              fontSize: 21,
-              fontWeight: FontWeight.bold,
-            ),
-            elevation: 0,
-          ),
+        ChangeNotifierProvider(
+          create: (context) => BookingViewModel(),
         ),
-        routes: ScreenRoutes.routes,
-        initialRoute: "/splashScreen",
-      ),
+      ],
+      child: ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              title: 'Sportner Admin',
+              debugShowCheckedModeBanner: false,
+              builder: (context, child) {
+                return ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: child!,
+                );
+              },
+              theme: ThemeData(
+                scaffoldBackgroundColor: AppColors.scaffoldColor,
+                // primarySwatch: PrimaryColor.appColor,
+                primaryColor: AppColors.appColor,
+                elevatedButtonTheme: const ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(
+                      AppColors.appColor,
+                    ),
+                  ),
+                ),
+                appBarTheme: AppBarTheme(
+                  iconTheme: const IconThemeData(color: AppColors.black),
+                  backgroundColor: AppColors.scaffoldColor.withAlpha(2),
+                  titleTextStyle: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  elevation: 0,
+                ),
+              ),
+              routes: ScreenRoutes.routes,
+              initialRoute: "/splashScreen",
+            );
+          }),
     );
   }
 }
